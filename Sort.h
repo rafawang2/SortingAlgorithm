@@ -96,3 +96,55 @@ vector<int> ShellSort(vector<int> vec) {
     }
     return vec;
 }
+
+void merge(vector<int>& vec, int l, int m, int r) {
+    int n1 = m-l+1; // v1的長度 l~m
+    int n2 = r-m;   // v2的長度 m+1~r
+    // copy two vec
+    vector<int> v1(n1), v2(n2);
+    for (int i=0; i<n1; ++i) {
+        v1[i] = vec[l+i];
+    }
+    for (int i=0; i<n2; ++i) {
+        v2[i] = vec[m+1+i];
+    }
+
+    // merge two vec
+    int p=0, q=0;
+    int k = l;
+    while (p<n1 && q <n2) {
+        if (v1[p] < v2[q]) {
+            vec[k] = v1[p];
+            ++k;
+            ++p;
+        }
+        else {
+            vec[k] = v2[q];
+            ++k;
+            ++q;
+        }
+    }
+
+    // 若p, q大小不同，會有多的也要處理
+    while (p<n1) {
+        vec[k] = v1[p];
+        ++p;
+        ++k;
+    }
+    while (q<n2) {
+        vec[k] = v2[q];
+        ++q;
+        ++k;
+    }
+}
+
+vector<int> mergeSort(vector<int> vec, int l, int r) {
+    if(l>=r)
+        return vec;
+    int m = (l+r)/2;
+    vec = mergeSort(vec, l, m);
+    vec = mergeSort(vec, m+1, r);
+    PrintVec(vec);
+    merge(vec, l, m, r);
+    return vec;
+}
