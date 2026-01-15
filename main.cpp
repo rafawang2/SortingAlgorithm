@@ -12,4 +12,6 @@ int main() {
     InsertSort(v);
     cout << "Selectoin Sort:\n";
     SelectionSort(v);
+    cout << "Shell Sort:\n";
+    ShellSort(v);
 }

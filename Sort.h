@@ -74,4 +74,25 @@ vector<int> SelectionSort(vector<int> vec) {
             swap(vec[i], vec[min_idx]);
         PrintVec(vec);
     }
+    return vec;
+}
+
+vector<int> ShellSort(vector<int> vec) {
+    int n = vec.size();
+    int span = n/2;
+    while (span >= 1) { // 持續直到間隔收斂到0
+        bool flag;
+        do {
+            flag = false;
+            for (int i=0; i+span < n; ++i) {
+                if (vec[i] > vec[i+span]) {
+                    swap(vec[i], vec[i+span]);
+                    flag = true;
+                    PrintVec(vec);
+                }
+            }
+        } while (flag);
+        span /= 2;
+    }
+    return vec;
 }
