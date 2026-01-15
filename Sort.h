@@ -148,3 +148,29 @@ vector<int> mergeSort(vector<int> vec, int l, int r) {
     merge(vec, l, m, r);
     return vec;
 }
+
+int partition(vector<int>& vec, int l, int r) {
+    // 最後一筆當pivot
+    int x = vec[r];
+    int i = l-1;
+    for (int j=l; j<r; ++j) {
+        // 若找到比pivot小的i才往前，並往前跟大的交換
+        if (vec[j] <= x) {
+            ++i;
+            swap(vec[i], vec[j]);
+        }
+    }
+    int p = i+1;
+    swap(vec[p], vec[r]);
+    return p;
+}
+
+vector<int> QuickSort(vector<int> vec, int l, int r) {
+    if (l < r) {
+        int p = partition(vec, l, r);
+        PrintVec(vec);
+        vec = QuickSort(vec, l, p-1);
+        vec = QuickSort(vec, p, r);
+    }
+    return vec;
+}

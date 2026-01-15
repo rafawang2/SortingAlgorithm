@@ -14,6 +14,8 @@ int main() {
     SelectionSort(v);
     cout << "Shell Sort:\n";
     ShellSort(v);
-    cout << "Merge Sort\n";
+    cout << "Merge Sort:\n";
     mergeSort(v, 0, v.size()-1);
+    cout << "Quick Sort:\n";
+    QuickSort(v, 0, v.size()-1);
 }
