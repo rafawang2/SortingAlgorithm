@@ -8,6 +8,8 @@ int main() {
     PrintVec(v);
     cout << "Bubble Sort:\n";
     BubbleSort(v);
-    cout << "Insertion Sort\n";
+    cout << "Insertion Sort:\n";
     InsertSort(v);
+    cout << "Selectoin Sort:\n";
+    SelectionSort(v);
 }

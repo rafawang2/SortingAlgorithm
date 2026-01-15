@@ -60,3 +60,18 @@ vector<int> InsertSort(vector<int> vec) {
     }
     return vec;
 }
+
+vector<int> SelectionSort(vector<int> vec) {
+    int n = vec.size();
+    // 從unsort part選最小，並與unsort part第一個交換
+    for (int i=0; i<n; ++i) {
+        int min_idx = i;
+        for (int j=i; j<n; ++j) {
+            if (vec[min_idx] > vec[j])
+                min_idx = j;
+        }
+        if (min_idx != i)
+            swap(vec[i], vec[min_idx]);
+        PrintVec(vec);
+    }
+}
