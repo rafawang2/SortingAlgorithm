@@ -174,3 +174,46 @@ vector<int> QuickSort(vector<int> vec, int l, int r) {
     }
     return vec;
 }
+
+void heapify(vector<int>& vec, int parent, int heap_size) {
+    int Lchild = 2*parent+1;
+    int Rchild = 2*parent+2;
+    int max = parent;
+    if (Lchild < heap_size && vec[Lchild] > vec[max]) {
+        max = Lchild;
+    }
+    if (Rchild < heap_size && vec[Rchild] > vec[max]) {
+        max = Rchild;
+    }
+
+    // max有變過->繼續往下調整
+    if (max != parent) {
+        swap(vec[max], vec[parent]);
+        heapify(vec, max, heap_size);
+    }
+}
+
+void BuildHeap(vector<int>& vec, int heap_size) {
+    // 對所有non-leaf做heapify
+    for (int parent=(heap_size-1)/2; parent>=0; parent--) {
+        heapify(vec, parent, heap_size);
+    }
+}
+
+int ExtractMax(vector<int>& vec, int heap_size) {
+    int max = vec[0];
+    vec[0] = vec[heap_size-1];
+    heapify(vec, 0, heap_size-1);   // heap size減1!
+    return max;
+}
+
+vector<int> HeapSort(vector<int> vec) {
+    int n = vec.size();
+    BuildHeap(vec, n);
+    for (int i=n-1; i>=1; --i) {
+        // 最大的丟到vec最後面
+        vec[i] = ExtractMax(vec, i+1);
+        PrintVec(vec);
+    }
+    return vec;
+}

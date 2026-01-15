@@ -18,4 +18,6 @@ int main() {
     mergeSort(v, 0, v.size()-1);
     cout << "Quick Sort:\n";
     QuickSort(v, 0, v.size()-1);
+    cout << "Heap Sort\n";
+    HeapSort(v);
 }
