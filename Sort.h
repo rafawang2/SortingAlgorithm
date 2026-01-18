@@ -3,6 +3,7 @@
 # include <vector>
 #include <cstdlib> // For rand() and srand()
 #include <ctime>   // For time()
+#include <cmath>
 
 using std::cin;
 using std::cout;
@@ -260,30 +261,71 @@ vector<int> CountingSort(vector<int> vec) {
     int min = min_max.first;
     int max = min_max.second;
     int n = vec.size();
-    int k = max-min+1;  // size of occur list
+    int k = max-min+1;  // size of pos list
 
     // step 1: 計算各數的出現次數
-    vector<int> occur(k, 0);    // min~max
+    vector<int> pos(k, 0);    // min~max
     for (int i : vec) {
-        occur[i-min] += 1;
+        pos[i-min] += 1;
     }
 
     // step 2: 計算各數的正確位置
     for (int i=1; i<k; ++i) {
-        occur[i] += occur[i-1];
+        pos[i] += pos[i-1];
     }
 
     // step 3: shift right 1
     for (int i=k-1; i>=1; --i) {
-        occur[i] = occur[i-1];
+        pos[i] = pos[i-1];
     }
-    occur[0] = 0;
+    pos[0] = 0;
 
     vector<int> result(n);
     for (int i=0; i<n; i++) {
-        result[ occur[vec[i]-min] ] = vec[i];
+        result[ pos[vec[i]-min] ] = vec[i];
         PrintVec(result);
-        ++occur[vec[i]-min];
+        ++pos[vec[i]-min];
     }
     return result;
+}
+
+// LSD: 從最低位sort到最高位
+vector<int> RadixLSDSort(vector<int> vec) {
+    int maxVal = vec.front();
+    for (int v : vec) {
+        if (v > maxVal) {
+            maxVal = v;
+        }
+    }
+
+    int n = vec.size();
+
+    for (int exp = 1; maxVal / exp > 0; exp *= 10) {
+        vector<int> count(10, 0);
+        vector<int> output(n);
+        // 1. count digit
+        for (int i = 0; i < n; i++) {
+            int digit = (vec[i] / exp) % 10;
+            count[digit]++;
+        }
+        // 2. prefix sum
+        for (int i = 1; i < 10; i++)
+            count[i] += count[i - 1];
+
+        // 3.shift right
+        for (int i=9; i>=1; --i) {
+            count[i] = count[i-1];
+        }
+        count[0] = 0;
+
+        // 4. counting sort
+        for (int i = 0; i < n; ++i) {
+            int digit = (vec[i] / exp) % 10;
+            output[count[digit]] = vec[i];
+            ++count[digit];
+            PrintVec(output);
+        }
+        vec = output;
+    }
+    return vec;
 }

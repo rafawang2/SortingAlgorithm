@@ -23,4 +23,6 @@ int main() {
     HeapSort(v);
     cout << "Counting Sort\n";
     CountingSort(v);
+    cout << "RadixLSD Sort\n";
+    RadixLSDSort(v);
 }
