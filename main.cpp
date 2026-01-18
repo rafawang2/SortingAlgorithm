@@ -5,6 +5,7 @@
 int main() {
     vector<int> v = {50, 10, 80, 90, 70, 60, 65, 62};
     // vector<int> v = GenerateRandomVector(10, 0, 10);
+    // vector<int> v = {1, 0, 3, 1, 3, 1};
     PrintVec(v);
     cout << "Bubble Sort:\n";
     BubbleSort(v);
@@ -20,4 +21,6 @@ int main() {
     QuickSort(v, 0, v.size()-1);
     cout << "Heap Sort\n";
     HeapSort(v);
+    cout << "Counting Sort\n";
+    CountingSort(v);
 }

@@ -9,6 +9,7 @@ using std::cout;
 using std::endl;
 using std::vector;
 using std::swap;
+using std::pair;
 
 void PrintVec(const vector<int>& vec) {
     for (int i : vec) {
@@ -216,4 +217,73 @@ vector<int> HeapSort(vector<int> vec) {
         PrintVec(vec);
     }
     return vec;
+}
+
+pair<int, int> find_min_max(const vector<int>& vec) {
+    int n = vec.size();
+    int minVal, maxVal;
+    int i = 0;
+
+    // 初始化
+    if (n % 2 == 0) {
+        if (vec[0] < vec[1]) {
+            minVal = vec[0];
+            maxVal = vec[1];
+        } else {
+            minVal = vec[1];
+            maxVal = vec[0];
+        }
+        i = 2;
+    } else {
+        minVal = maxVal = vec[0];
+        i = 1;
+    }
+
+    for (; i + 1 < n; i += 2) {
+        int local_min, local_max;
+        if (vec[i] < vec[i + 1]) {
+            local_min = vec[i];
+            local_max = vec[i + 1];
+        } else {
+            local_min = vec[i + 1];
+            local_max = vec[i];
+        }
+        minVal = std::min(minVal, local_min);
+        maxVal = std::max(maxVal, local_max);
+    }
+
+    return {minVal, maxVal};
+}
+vector<int> CountingSort(vector<int> vec) {
+    // find range for vec
+    pair<int, int> min_max = find_min_max(vec);
+    int min = min_max.first;
+    int max = min_max.second;
+    int n = vec.size();
+    int k = max-min+1;  // size of occur list
+
+    // step 1: 計算各數的出現次數
+    vector<int> occur(k, 0);    // min~max
+    for (int i : vec) {
+        occur[i-min] += 1;
+    }
+
+    // step 2: 計算各數的正確位置
+    for (int i=1; i<k; ++i) {
+        occur[i] += occur[i-1];
+    }
+
+    // step 3: shift right 1
+    for (int i=k-1; i>=1; --i) {
+        occur[i] = occur[i-1];
+    }
+    occur[0] = 0;
+
+    vector<int> result(n);
+    for (int i=0; i<n; i++) {
+        result[ occur[vec[i]-min] ] = vec[i];
+        PrintVec(result);
+        ++occur[vec[i]-min];
+    }
+    return result;
 }
